@@ -1,0 +1,605 @@
+---
+title: "Deyle Lab: Quantifying cross-scale interactions in complex natural systems: *prediction from satellite scaleing down to individual tree measurements* "
+author: "Josue Navarrete"
+date: "2023-06-08"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+## {.tabset}
+### Literature Review 
+>The following is the gathering of information. That I felt relevant to write/copy down and these aren't my own thoughts or opinions. 
+
+
+**SET 1: Reading**
+
+
+ [2012: Detecting Causlity in Complex Ecosystems](https://doi.org/10.1126/science.1227079)
+
+Notes: 
+
+CCM : Convergent Cross Mapping 
+
+- Measuring the extent to which the historical record of the y values can reliably estimating states of x. only if, x is causally influencing y.
+
+ [2017: Empirical Dynamic Modelling for Beginners](https://doi.org/10.1007/s11284-017-1469-9)
+
+Notes:
+
+- Mirage correlation: where correlation can occur without causation and causation may also occur in the absence of correlation
+
+- State dependency: The relationship among interacting variables change with different states of the system.
+
+- Moran effect: Strong correlation is driven by a shared component (i.e the environment)
+
+- State Space Reconstruction (SSR): Lagged coordinates embedding of time series data
+
+- Non-Linearity: the state dependency of a nonlinear dynamical system.
+
+- S_map: "Sequential LOcally Weighted Global Map", makes forecasting using the whole library of points with certain weights. Locally weighted linear regression.
+
+- Simplex projection: method to distinguish chaotic time series from random noise. "Future values may be predicted from the behavior of similar past values."
+
+To distinguish between nonlinear dynamical systems from linear stochastic systems. Compare the performance of equivalent linear and non-linear S_map models.
+
+EDM (Empirical Dynamic Modelling) can be used to reveal causation bewteen vairables. Two variable are causally linked if they interact in the same dynamical system. 
+
+Cross mapping algorithm - Aims to test the causation between a pair of variables in dynamical systems. If M_1 and M_2 are equal and belong to the same dynamical system. 
+
+Forecasting Methods
+Univariate embedding - uses time lagged values of a single varible to reconstruct the state space.
+
+Multivariate embedding - leverages informed varibles to reconstruct the state space
+
+Multi-view embedding - leverages information by combining many possible embeddings 
+
+
+
+[2020: Leveraging spatial information to forecast nonlinear ecological dynamics](https://doi.org/10.1111/2041-210X.13511)
+
+Notes: 
+
+  Aim: Introduce modifications of ARD(Automatic Relavant Determination) intended to resolve this identifiablity issue. The issue is that identifiablity isn't consistant across repetitions.
+  
+  Method: use the physical network topology of a spatial-temporal system to derive a Baysain prior for expected relevence of each lag.
+  
+    Making ARD more liking to converge to collection of lags that are biologically and physically plausible without restricting the inference to a fixed set.
+    
+  Conclusion: 
+  
+  - Dynamic complexity and time series length play a role in the forecast ability
+  
+  - As complexity decreases and time series increases, forecast improve.
+  
+  - When dynamics are regular(periodic) the attractor can be with a short time series. The methods predict dynamics well when dynamics are chaotic, more data are required to reconstruct the attractor. 
+  
+  - Local s_EDM aren't advantageous over local EDM
+  
+  - Concatenation methof are better for short time series given that spatial replicates contribute independent information
+  
+  - Symmetric dispersal - local EDM is better
+  
+  - Coarse resolution - local s_EDM
+  
+  - Fine resolution - concatenated method 
+    
+    - Concatenated libraries should be done in conjuction with s_EDM approach
+    
+******
+******
+
+
+**SET 2: Reading**
+
+1990: [Nonlinear forecasting as a way of distinguishing chaos from measurement error in time series](https://doi.org/10.1038/344734a0)
+
+Notes:
+
+- Discuss making short-term predictions about the trejectories of chaotic dynamical systems. Distinguish noise associated with deterministic chaos from sampling errpr and other external noise.
+
+Two sources of uncertainty in forecasting the motion of natural dynamical systems:
+
+- annual densities of plant or animal populations 
+- complexity of the dynamics themselves 
+
+Aim: Make short-term predictions that are based on a library of past patterns in a time series. 
+
+Method(s): By comparing the predicted and actually trajectories.
+
+- For chaotic time series the accuracy of the nonlinear forecast falls off with increased prediction time interval.
+
+- For un-correlated noise, the forecasting accuracy is roughly independent of the prediction interval. 
+
+Steps:
+
+- first-difference the data partly to give greater density in phase space to such chaotic attractors as may exist
+
+- Partly to clarify nonlinearities by reducing the effecy of any short-term linear autocorrelations. 
+
+
+What is a [Simplex Projection](https://www.zora.uzh.ch/id/eprint/129395/1/Simplex_projection_walkthrough.pdf) method?
+
+- Chaos produced by some deterministic process creates patterns in the time series. The patterns are exploited by simplex projection, and predictions are skillful. However, as one predicts further into the future, the prediction skill decreases. A time series of noise (a series of independent random numbers) does not show this decline in prediction skill with prediction interval. Hence, the prediction skill – prediction interval relationship can distinguish chaos from noise.
+
+- Noisy limit cycle 
+- low dimensional chaos superimposed on a seasonal cycle. (Grassberger-Procaccia algo.)
+
+1994: [Nonlinear forecasting for the classification of natural time series](https://doi.org/10.1098/rsta.1994.0106)
+
+Notes:
+
+Aim: review some of the issues concerning the use of forecasting stochastic chaos. Introduce a method for characterizing nonlinearity using 'S-maps' and a method for analysing multiple short time series with composite attractors.
+
+- Non-linearity and chaos can hold out the promise of producing complex time signatures with relatively simple (low dimensional) underlying dynamics, and the acknowledgment that such nonlinearity may allow improved short-term predictability while at the same time it can place limits on long-term forecastability.
+
+**[Deterministic and Stochastic Chaos](https://www.bsee.gov/sites/bsee.gov/files/tap-technical-assessment-program/052az.pdf) **, for further detail if needed.
+
+- Stochastic chaos: bounded motion which becomes increasingly unpredictable with the time evolution of the system. Fokker-Planck equation.
+
+- Stochastic chaos can only exist with process while deterministic chaos can not. 
+
+1998: [Reconstruction and cross-prediction in coupled map lattices using spatio-temperal embedding techniques](https://doi.org/10.1016/S0375-9601(98)00541-6)
+
+A further look into mathematics of this article might be helpful
+
+Notes:
+
+- They find that spatio-temporal delay reconstructions give better predictability than standard methods using either **time delays only or spatial delays only**
+
+- Systems with low-dimensional state space it is possible to reconstruct the whole system just from the observed time series using delays. 
+
+Takens' Theorem 
+- In a typical situation you do not have access to all dynamical variables(x,y, and z) but only to one time series.
+
+- Takens' theorem now states that you can obtain a structure that is topologically equivalent to attractor by means of a delay embedding. It further gives an upper bound for the required dimension of this embedding. However, this is not so useful in reality, as you do not know the quantities going into this. 
+
+- Coupled Map Lattice. 
+
+- Spatial embedding techniques perform equally well as time delay embeddings.
+
+- Spatio-temporal reconstructions can increase predictability when compared to standard temporal or spatial delay maps. 
+
+What are [**Embedding**](https://developers.google.com/machine-learning/crash-course/embeddings/video-lecture) ?
+
+- relatively low-dimensional space into which you can translate high-dimensional vectors. Embeddings make it easier to do machine learning of large inputs like sparse vectors representing words.
+
+- tier space with supervised information
+
+- dimensions = 4sqrt(possible values)
+>> Higher-dimensional embeddings can more accurately represent the relationships between input values 
+
+2019: [Insight into coral reef benthic dynamics from nonlinear spatial forecasting](https://doi.org/10.1098/rsif.2019.0047)
+
+Notes:
+
+- Takes Discrete data into considiration. 
+
+**What is Nonlinear Determinism ???**
+
+- The input/output is said to be non-deterministic when one of several result may occur, without any a priori known cause. This is modeled with a relation rather a function.
+
+- I am understanding it as a relative pattern observed in a chaotic system. For example, a double pendulum is said to exhibit nonlinear deterministic behavior. 
+
+>I would say we generally think of nonlinear determinism as a wider set of phenomena than strictly chaotic dynamics, and the determinism does not need to be absolute. I think this is best illustrated in a response we wrote a while back to another paper: [Are exploited fish populations stable?](https://pubmed.ncbi.nlm.nih.gov/22089231/)
+
+>**A small amount of stochasticity can excite nonlinear, nonequilibrium dynamics in a system that in the absence of stochasticity would come to rest at a stable equilibrium point and exhibit limited, linear dynamics.** That said, most of the dynamics even in this case arise from the detirministic interactions between the system variables, not the driving noise.
+
+>The important "nonlinear" bit is that the driving causes of those deterministic components arise from state-dependent interactions between cause and effect, not linearly separable drivers acting independently on the responses.
+
+
+**What does embedding allow:** It allows one to probe the extent to which a system is nonlinear deterministic as opposed to being dominated by random noise. 
+
+This done splitting the time series into two regimes, a training and a testing set. 
+
+> The training set is used to reconstruct the dynamical evolution
+of the system in the embedded space. This is achieved using
+equation **z = (x_n, x_(n-t), x_(n-2t), ... , x_(n-(m-1)t))** and creating a series of vector positions in an
+embedded space that when linked together, reveal trajectories in
+that space. Next, a point from the testing set is embedded in the
+same space, and one then probes whether the training set trajec-
+tories that are near to the testing point are good forecasters of the
+future evolution of the testing point. If one finds that the trajec-
+tories nearby to the testing point serve as better forecasts than
+using an average of a large number of trajectories well-separated
+in space, then the system in question has the hallmarks of nonlinear
+determinism.
+
+- Their approach with discrete data will be taking the mode of the neighbour forecasts seems fitting in capturing the basic concept of averaging the trajectories.
+
+- The best forecasts of the surrounding region come from considering other regions in the domain that are most similar. 
+
+- Context of the possible disturbances can help understand nonlinear deterministic behaviors or the lack of it. 
+
+- Areas of interest are early stages of succession or immediately following a disturbance event that has reset the spatial configuration. 
+
+******
+******
+
+**SET 3: Reading**
+
+2019: [Influence of aggregation on benthic coral reef spatio-temporal dynamics](https://doi.org/10.6084/m9.figshare.c.4387988.v1)
+
+Notes:
+
+- An analysis of the dynamics of coral reefscapes simulated with a lattice model shows consistent trends that can be categorized into four stages: a repelling stage that moves rapidly away from an unstable initial condition, a transient stage where spatial rearrangements bring key competitors into contact, an attracting stage where the reefscape decays to a steady-state attractor, and an attractor stage.
+
+- The transient stage exhibits nonlinear dynamics whereas the other stages are linear. 
+
+- The degree of nonlinearity is linked to spatial configurations of sessile organisms.
+
+- Aggregation is a measure of the degree to which individuals of the same type are spatially clumped, and high levels of aggregation are a common feature in the distribution of substrate-bound organisms, including stony corals.
+
+- conspecific aggregation: a cluster of the same species(i.e herd)
+
+- Quantitative features along pathways (e.g. inflection points):
+    
+    - repelling
+    
+    - transient
+    
+    - attracting
+    
+    - attractor stages
+    
+
+
+
+### Empirical Dynamics Modeling 
+
+or Nonlinear time-series forecasting 
+
+>The following is the gathering of information. That I felt relevant to write/copy down and these aren't my own thoughts or opinions. 
+
+
+**EDM **Refer to [Empirical Dynamics Modeling](https://cran.r-project.org/web/packages/rEDM/vignettes/rEDM-tutorial.pdf)
+
+
+- EDM is a non-parametric framework for modeling nonlinear dynamic systems. EDM is based on the mathematical theory of reconstructing attractor manifolds from time series data(Takens 1981).
+
+  - Empirical models, which infer patterns and associations from the data (instead of
+using hypothesized equations), represent an alternative and highly flexible approach. 
+
+  - Interactions change over time and as a function of the system state.
+
+**Time Series as Observations of a Dynamic System**
+
+- Time series can be viewed as a projection of the behaviors of a dynamic system.
+
+![image of lorenz attractor](/Users/josuenavarrete/BRITE/edm2.png)
+
+**Attractor Reconstruction/Takens' Theorem**
+
+- The goal of EDM is to reconstruct the system dynamics from a time series data. 
+
+- Takens’ Theorem (Takens 1981) states that mathematically valid and property preserving reconstructions of the attractor can be created using lags of a single time series, then substituting those lagged time series for unknown or unobserved variables. In other words, instead of representing the system state using a complete set of state variables, we can instead use an E-dimensional lagged-coordinate embedding:
+
+
+**Identifying Nonlinearity**
+
+We can distinguish between noise and non-linear deterministic behavior using S-maps.
+
+S-map:
+
+- Fits local linear maps to describe the dynamics.
+
+- Contains a nonlinear localisation parameter, theta, that determines the degree to which points are weighted, such that local linear map is identical for different points in the reconstructed state-space. As such, the S-map will be identical to global linear map. 
+
+
+
+### Mangroves Literature
+>The following is the gathering of information. That I felt relevant to write/copy down and these aren't my own thoughts or opinions. 
+
+**What are the different species of Mangrove in Belize ?**
+
+- Red Mangroves (Rhizophora mangle)
+
+- Black Mangroves (Avicennia germinans)
+
+- White Mangroves (Laguncalaria racemosa)
+
+- Buttonwood Mangroves (Conocarpus erectus)
+
+Facts:
+
+- Mangroves cover 3.4% of Belize's land and border much of the 386 kilpmetre coastline and cayes of the country.
+
+- Overall coverage has decreased over the years due to the expanding developments including hotels and resorts. 
+
+- Almost half of Mangrove coverage is in Asia
+
+
+[Belize Blue Carbon: Establishing a national carbon stock estimate for mangrove ecosystems](https://doi.org/10.1016/j.scitotenv.2023.161829)
+
+Notes:
+
+**What is blue carbon?**
+
+- Blue carbon refers to **carbon stored long-term** by ocean and coastal ecosystems, thus removing CO2 from the atmosphere and contributing to climate change mitigation. 
+
+  - Coastal wetlands, namely mangroves, seagrasses and tidal marshes are prime examples of blue carbon ecosystems.
+
+  - Mangroves alone being 4-5 times more effective at sequestering carbon than tropical terrestrial forest. 
+  
+  
+Mangroves provide a range of ecosystem services such as costal protection, pollution control, fisheries habitat. 
+
+- They are the only marine ecosystems with established methodologies for **estimating national inventories of greenhouse gas fluxes**
+
+- They ecosystems alone are estimated to have lost 35-86% of their original global extent.
+
+- Mangrove ecosystems are threatened by:
+ 
+  - Eutrophication; a body of water has a high nutrient concentration causing an algae bloom causing the water to become anoxic causing organisms to die. 
+  
+  - Clearing for development and aquaculture. 
+  
+  - Effects of climate change, such as EL Nino Southern Oscillation events
+  
+  - Sea levels rising 
+  
+  - Frequent and intense hurricane events. 
+  
+- Mangroves are perhaps the most effective blue carbon systems, **storing 11.7 Pg of carbon globally**, largely in their soils 
+  
+Mangrove loss and degradation will result in:
+
+- losing carbon stocks and rates of burial
+
+- Re-mobilization of carbon for that ecosystem instead of traditional sinking 
+
+- Below is produced by the [Global Tidal Wetlends Change](https://www.globalintertidalchange.org/data-viewer) which shows the change over time of mangroves in belize. 
+
+![image of lorenz attractor](/Users/josuenavarrete/BRITE/Belize.png)
+ Aim: 
+
+- This study intents to support the implementation of Belize's updated NDC commitment to protect 12,00 ha gy 2030, by imforming priority areas for the efforts based on carbon sequestration value combined with important ecosystem services by region.
+
+- Second, report on a novel model to bulid capacity in the region and strengthen local research by engaging key stakeholders in all decisions from site-selection to data reporting through open knowledge sharing and training. 
+  
+  
+Site Selection: 
+
+HI = Hicks Caye, DC =Drowned Caye Range, ST = Shipstern Lagoon, NR = New River, GG = Gra Gra Lagoon, CC = Channel Caye, BC = Big Creek, PA = Payne's Creek, FR = Frenchman
+Caye, TA = Turneffe Atoll
+
+- 10 sites were chosen from 50 that represent a wide range of geographical, biophysical, and morphological characteristics of mangrove systems across the Belizean coastline.
+
+- Each site is classified by expert researchers as healthy (minimal disturbance with goo d mangrove growth), distrubed (objectively healthy sites with signs of anthropogenic influence such as tree harvesting), or degraded (sites with mostly dead or dying mangroves)
+  
+Field Sampling:
+
+- Established two transects seperated by a minimum of 100 m. Transects started 15m from the shoreline running 125 m perpendicular to the coast into the mangrove ecosystem. At 25 m intervals along each transect, they established 6 six plots, inside which they initially recorded conditions of overall health, depth of standing water, and other notable defining characteristics. 
+
+- Exceptions: Hicks Caye; only a single transect was conducted during initial training, New River; lack of standing mangroves farther inshore led to shorter second transect of only 75 m, and Big creek; divided into two 75 m transects due to a creek preventinf running a single transect. 
+  
+Mangrove Biomass:
+
+- Height, canopy width, diameter at breast height for all mangroves with a 5cm <= DBH <= 7 m radius of the plot center were censused.
+
+- Within a nested 2 m radius plot, the team further measured all plants with a DBH < 5 cm and counted all seedlings. 
+
+- Above-ground biomass (AGB) and below-ground biomass (BGB) estimates were calulated.
+
+Soil carbon:
+
+- A sediment core was collected from the center of each plot using a 1 m long, 6.35 cm diameter open-faced gouge. 
+
+- Total length sampled of each core was recorded to note this occurrence when present. 
+
+- Measured the pH and oxidation reduction potential of the pore water (or as close to the pore water as possible, if standing water was present at the site).
+
+- Measured salinity 
+
+
+Data preparation:
+
+- Total organic carbon for each core was extrapolated out by the average core organic carbon multiplied by the plot area with the biomass carbon for the same area. 
+
+- National value was achieved by using a 2020 mangrove cover baseline conducted at 10 m resolution. 
+
+- Mangrove stands of each site location were seperated into biophysical classes based on the surrounding geomorphology and ecotype. 
+
+  - Mangrove height 
+  
+    - (>5 m ) Tall
+  
+    - (2-5 m) Medium
+  
+    - (<2 m ) Dwarf
+  
+  - Spatial Categories
+    - riverline/coastal
+    - lagoonal
+    - island/caye (offshore)
+
+
+Importance of the study and future assessments:
+
+- Lagoonal systems had a significantly lower average carbon stock than both riverine and caye ecosystems (p < 0.005 each), while riverine and caye carbon stock averages were not significantly different(p = 0.06).
+
+- Another emerged from the average tree height of each plot. Dwarf locations had significantly lower average carbon stock than medium or tall plots. Tall and medium plot weren't significantly different. 
+
+  - There wasn't no discernible significant relationship between aboveground biomass and sediment stock across all sites.
+
+
+
+DATA SET:
+
+Description 
+
+
+
+
+******
+******
+
+**Additional Readings**
+
+[2019: Individual-based modeling of mangrove forest growth: MesoFON – Recent
+calibration and future direction](https://doi.org/10.1016/j.ecss.2019.106302)
+
+Abstract: 
+
+What is (IBM) Individual Based Model?
+
+- They are explicit representation of individual organisms.
+- They developed for questions where individual variability, local interactions, and adaptive behavior.
+
+![Example of Individual Based Model](/Users/josuenavarrete/BRITE/IBM_Ex.jpg)
+
+- Perform a IBM of mangrove forests to mitigate anthropogenic threats. 
+  
+  - IBMs would unveil management scenarios with maximum sustainable timber yield to prevent mangrove conversion and over-exploitation.
+  
+**What is mesoFON ?** [mesoFON](http://www.mesofon.org/)
+
+- mesoFON is an Individual-based mangrove forest growth model. (FON) Field of Neighborhood approach is used to determine the competitive influence of neighbouring tree on each other.
+
+Spatial precision and processes:
+
+- (50m x 50m) to (100m x 100m). 
+
+- 1000 years with 1 year intervals
+
+- tree state variables: Height, diameter at breast height and crown dimension 
+
+- Recruitment, growth, and mortality 
+
+Processes in detail:
+
+- The intensity field of competition declines with increasing distance from a focal tree. 
+
+- The competitive influence the foaci tree exerts on a neighbor tree is dependent on the local intensity of the first and on the overlapping FON area. 
+
+- Tree death takes place when the 5-years moving average of the dbh increment falls below a threshold. Hence, it relies indirectly on the growth process.
+
+**WHAT IS THE DIAMETER AT BREAST HEIGHT THRESHOLD ???**
+- no answer, yet!
+
+- Describe the mesoFON's future direction: Embedding in the general ecosystem model and targeting the solution of threats at larger spatial scales. 
+
+Notes:
+
+- SORTIE is one of the most widely used and best-known individual-based models for forest dynamics.
+
+Tasks Individual-based models of mangrove forests should: 
+
+Task 1 describe the essential life processes of trees linked to resource, regulator and hydroperiod gradients
+
+Task 2 test the impact of changes in disturbance regimes on mangrove forest dynamics
+
+Task 3 evaluate different management scenarios according to their potential ecological, economic, or social outcome of mangrove sustainability
+
+Task 4 compare recovery patterns to test the plausibility of different hypotheses explaining the role of resource gradients in mangrove gaps
+
+Task 5 synthesize the species-specific and age-specific regeneration potential of individual trees after disturbances and their importance for forest recovery
+
+Task 6 contribute to understanding the roles and relative contribution of inter-specific competition and ‘‘chance’’ in structuring mangrove forests following gap formation
+
+Task 7 test the synchronization and de-synchronization effect of canopy disturbances on mosaic cycles of successional forest stages on a landscape level to develop a general understanding of mangrove forest dynamics
+  
+- IBM requires large data sets and is time consuming.
+
+- Focus on large mangrove coverage, tree species richness and high potiential of above ground biomass production and ecosystem carbon sequestration to mitigate climate change.
+
+- Focus on important species in terms of distribution range, dominance and/or economic value. 
+
+Linked threats:
+
+- Altered Hydrology
+
+- Salinization
+
+- Clear Felling (tree removal)
+
+- Gap formation
+
+- Oligo-Eutrophication (Excessive richness of nutrients in a body of water)
+
+- Pollution
+
+- Altered Sedimentation
+
+Each threat is associated with one or more model type:
+- IBM MODEL: Reflection of an individual tree's life cycle, resource dynamics, tree population sizes represented by integer numbers and variablility amoung tree individuals.
+
+- MECHANISTIC WIND-THROW MODEL: Risks of individual trees for uprooting or stem breakage based on tree attributes(species, crown width/height, stem diameter/height, wood density) and environmental factors such as wind speed tree density, distance from stand edge and soil type. 
+
+
+
+- FUNCTIONAL-STRUCTURAL MODEL: Embraces the ecophysiological processes of the tree organs (carbon allocation, photosynthesis, transpriation, respriation) and the 3d-architecture of branches. 
+
+
+- ECOSYSTEM MODEL: Hydrology of a site (precipitation, transpiration, and evaporation), nutrient cycling of a site, and lateral transport of water and suspended substances. 
+
+North/Central-America: Belize
+
+Up-stream threats: 
+
+- Runoff from Agriculture: Fertillizers, pesticides/water disposal
+
+Interior threats:
+  Anthoropogenic threats:
+  
+    - Conversion to cities, tourism, Salt Pans, Rice Paddies Pasture, (Shrimp Farms)/ 
+    Drainage & Canalization.
+  
+  Natural threats:
+    
+    - Hurricanes and floods
+  
+
+Down-stream threats:
+
+- Urbanization, Tourism, Infrastructure, Sea level rise
+
+
+After the passage of hurricane Andrew over South Florida in 1992:
+
+- (black)Avicennia and (white)Laguncularia sprouted vigorously but (red)Rhizophora did not and it regenerated quicker by recruiting seedlings
+
+
+Up-Stream threats to mangroves 
+A) Eutrophication: Fragmented landscape altered land uses cause important up-stream threats. 
+
+  - Shrimp farms are known to cause severe nutrient loading and chemical pollution to those mangroves
+
+Geomorphological changes: 
+
+- Agricultural land use, urban and industrial development, adversely affect mangroves by the alteration of the hydrological regime. 
+
+
+- GEM simulates:
+the sequestration and cycles of carbon, nitrogen and phosphorus in
+mangrove ecosystems under the influence of surface and subsurface
+water including lateral transport of water and suspended constituents,
+such as salt, dissolved inorganic nitrogen (DIN) and phosphorus (DIP),
+organic matter and sediments.
+
+___
+
+[2021: Mapping National Mangrove Cover for Belize Using Google Earth Engine and Sentinel-2 Imagery](https://doi.org/10.3390/app11094258)
+
+Notes:
+
+Aim: addresses the need for a finer-scale national mangrove inventory. 
+
+
+
+![Project Overview](/Users/josuenavarrete/BRITE/prj_overview.jpg)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
